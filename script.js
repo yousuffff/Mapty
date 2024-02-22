@@ -12,6 +12,10 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
 
+const type = inputType.value;
+const duration = inputDuration.value;
+const distance = inputDistance.value;
+
 class Workout {
   date = new Date();
   id = ((Date.now()) + ''.slice(-10));
@@ -67,6 +71,13 @@ class App {
     }
   }
   _loadMap(position) {
+    if(type === 'runninng'){
+      const cadence = inputCadence.value;
+      
+    }
+    if(type === 'cycling'){
+      const elevation = inputElevation.value;
+    }
     const { latitude, longitude } = position.coords;
     console.log(latitude, longitude);
     console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
