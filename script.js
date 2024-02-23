@@ -12,9 +12,6 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
 
-const type = inputType.value;
-const duration = inputDuration.value;
-const distance = inputDistance.value;
 
 class Workout {
   date = new Date();
@@ -71,13 +68,7 @@ class App {
     }
   }
   _loadMap(position) {
-    if(type === 'runninng'){
-      const cadence = inputCadence.value;
-      
-    }
-    if(type === 'cycling'){
-      const elevation = inputElevation.value;
-    }
+
     const { latitude, longitude } = position.coords;
     console.log(latitude, longitude);
     console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
@@ -111,7 +102,29 @@ class App {
   }
   _newWorkout(e) {
     inputDistance.value = inputDuration.value = inputElevation.value = inputCadence.value = '';
+
+    const validInput = (...input) => input.every(inp => Number.isFinite(inp));
     e.preventDefault()
+
+    const type = inputType.value;
+    const duration = +inputDuration.value;
+    const distance = +inputDistance.value;
+
+    if (type === 'runing') {
+      const cadence = +inputCadence.value;
+      if (
+        validInput(duration, distance, cadence)
+      ) {
+
+      }
+      else {
+        alert('Invalid duration')
+      }
+
+    }
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+    }
     const { lat, lng } = this.#mapEvent.latlng;
     console.log(lat, lng)
     L.marker([lat, lng])
