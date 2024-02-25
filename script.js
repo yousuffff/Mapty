@@ -109,13 +109,12 @@ class App {
     const type = inputType.value;
     const duration = +inputDuration.value;
     const distance = +inputDistance.value;
-
+    console.log(type, duration, distance)
     if (type === 'runing') {
       const cadence = +inputCadence.value;
-      if (
-        validInput(duration, distance, cadence)
-      ) {
+      if (!validInput(duration, distance, cadence)) {
 
+        console.log(type, duration, distance, cadence)
       }
       else {
         alert('Invalid duration')
