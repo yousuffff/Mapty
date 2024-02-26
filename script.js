@@ -101,29 +101,35 @@ class App {
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
   }
   _newWorkout(e) {
-    inputDistance.value = inputDuration.value = inputElevation.value = inputCadence.value = '';
+    e.preventDefault()
+
 
     const validInput = (...input) => input.every(inp => Number.isFinite(inp));
-    e.preventDefault()
+    const allPositive = (...input) => input.every(inp => inp > 0);
+
 
     const type = inputType.value;
     const duration = +inputDuration.value;
     const distance = +inputDistance.value;
-    console.log(type, duration, distance)
-    if (type === 'runing') {
+
+
+    if (type === 'running') {
       const cadence = +inputCadence.value;
-      if (!validInput(duration, distance, cadence)) {
-
-        console.log(type, duration, distance, cadence)
-      }
-      else {
-        alert('Invalid duration')
-      }
-
+      if (!validInput(duration, distance, cadence)
+        || !allPositive(duration, distance, cadence))
+        return alert('Invalid')
     }
+
+
+    
     if (type === 'cycling') {
       const elevation = +inputElevation.value;
+      if (!validInput(duration, distance, elevation)
+        || !allPositive(duration, distance,))
+        return alert('Invalid')
     }
+
+
     const { lat, lng } = this.#mapEvent.latlng;
     console.log(lat, lng)
     L.marker([lat, lng])
@@ -138,6 +144,7 @@ class App {
       .setPopupContent('Workout')
       .openPopup();
     form.classList.add('hidden')
+    inputDistance.value = inputDuration.value = inputElevation.value = inputCadence.value = '';
   }
 
 }
