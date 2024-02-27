@@ -15,6 +15,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 class Workout {
   date = new Date();
   id = ((Date.now()) + ''.slice(-10));
+  click = 0
   constructor(coords, distance, duration) {
     this.coords = coords;
     this.distance = distance;
@@ -31,6 +32,9 @@ class Workout {
 
     this.discription = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`
 
+  }
+  clicks(){
+    this.click++
   }
 
 }
@@ -64,12 +68,14 @@ class Cycling extends Workout {
 // Application
 class App {
   #map;
+
   #mapEvent;
   #workouts = []
   constructor() {
     this._getposition();
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField)
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this))
   }
 
   _getposition() {
@@ -222,11 +228,26 @@ class App {
 
     form.insertAdjacentHTML('afterend', html)
   }
+  _moveToPopup(e) {
+    const workoutEl = e.target.closest('.workout');
+    console.log(workoutEl)
+
+    if (!workoutEl) return;
+
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+    console.log(workout);
+    this.#map.setView(workout.coords, 13, {
+      animate: true,
+      pan: {
+        duration: 1
+      },
+    })
+    workout.clicks()
+  }
+  
 
 
 }
 const app = new App();
-
-const run1 = new Running([39, -19], 5.2, 24, 178);
-const cycling1 = new Cycling([39, -19], 27, 97, 523);
-console.log(run1, cycling1);
